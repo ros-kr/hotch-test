@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import axios, { AxiosResponse } from "axios";
 
-import { Article } from "./../models/article.interface";
-import { Config } from "./../config";
+import { Article } from "../models/article.interface";
+import { Config } from "../config";
 
 const getPong = async (req: Request, res: Response, next: NextFunction) => {
   let message = "Pong";
@@ -11,12 +11,23 @@ const getPong = async (req: Request, res: Response, next: NextFunction) => {
   });
 };
 
+const getAddedLanguges = (token: string|undefined) => {
+  // TODO read from db 
+}
+
 // getting a single Article
 const getArticle = async (req: Request, res: Response, next: NextFunction) => {
   // get the article name from the req
   let articleName: string = req.params.articleName;
-  let lang: any = req.header("Accept-language");
-  console.log(lang);
+  let lang: any = '';
+  
+  if(req.header("x-authentication")) {
+    lang = getAddedLanguges(req.header("x-authentication"))
+  }
+  else {
+    lang = req.header("Accept-language");
+  }
+  
   try {
     // get the article
     let url = Config.URL;

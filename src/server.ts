@@ -3,7 +3,10 @@ import * as dotenv from "dotenv";
 import http from 'http';
 import express, { Express } from 'express';
 import morgan from 'morgan';
-import routes from './routes/instructions';
+
+import intructionRoutes from './routes/instructions.routes';
+import userRoutes from './routes/user.routes';
+
 import { errorHandler } from "./middlewares/error.middleware";
 
 const router: Express = express();
@@ -17,7 +20,8 @@ router.use(express.urlencoded({ extended: false }));
 router.use(express.json());
 
 /** Routes */
-router.use('/', routes);
+router.use('/', intructionRoutes);
+router.use('/user', userRoutes);
 
 router.use(errorHandler);
 
